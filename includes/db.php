@@ -8,7 +8,7 @@ $host = getenv('DB_HOST') ?: 'shuttle.proxy.rlwy.net';
 $port = getenv('DB_PORT') ?: 41167;
 $db   = getenv('DB_NAME') ?: 'student_system';
 $user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: '';
+$pass = getenv('DB_PASS') ?: 'oYCEtxbowPQVorrpZukBtfryYPgPWMqZ';
 $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
 
 // SSL configuration for Railway
