@@ -1,0 +1,6 @@
+".env"   # Ensure .env is ignored in future commits
+
+.env
+vendor/
+node_modules/
+.DS_Store
