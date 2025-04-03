@@ -11,8 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $stmt->fetch();
     
     if ($user && password_verify($password, $user['password'])) {
+        // In your login success block:
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
+        $_SESSION['is_admin'] = $user['is_admin'];
+        
         header("Location: home.php");
         exit;
     } else {

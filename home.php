@@ -1,6 +1,8 @@
 <?php
-// Start session at the very top
 session_start();
+require __DIR__ . '/includes/db.php';
+require __DIR__ . '/includes/auth.php';
+requireLogin(); // This will redirect to login if not authenticated
 
 // Include database connection
 require 'includes/db.php';
@@ -206,21 +208,28 @@ try {
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach ($users as $user): ?>
-            <tr>
-                <td><?= htmlspecialchars($user['id']) ?></td>
-                <td><?= htmlspecialchars($user['username']) ?></td>
-                <td><?= htmlspecialchars($user['email']) ?></td>
-                <td><?= htmlspecialchars($user['firstName']) ?></td>
-                <td><?= htmlspecialchars($user['lastName']) ?></td>
-                <td class="actions">
-                    <a href="update.php?id=<?= $user['id'] ?>">Edit</a> |
-                    <a href="delete.php?id=<?= $user['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
+        <!-- In the HTML table section -->
+<tbody>
+    <?php foreach ($users as $user): ?>
+    <tr>
+        <td><?= htmlspecialchars($user['id']) ?></td>
+        <td><?= htmlspecialchars($user['username']) ?></td>
+        <td><?= htmlspecialchars($user['email']) ?></td>
+        <td><?= htmlspecialchars($user['firstName']) ?></td>
+        <td><?= htmlspecialchars($user['lastName']) ?></td>
+        <td class="actions">
+            <?php if ($_SESSION['user_id'] == $user['id'] || (isset($_SESSION['is_admin']) && $_SESSION['is_admin'])): ?>
+                <a href="update.php?id=<?= $user['id'] ?>">Edit</a>
+                <?php if ($_SESSION['user_id'] == $user['id'] || (isset($_SESSION['is_admin']) && $_SESSION['is_admin'])): ?>
+                    | <a href="delete.php?id=<?= $user['id'] ?>" onclick="return confirm('Are you sure?')">Delete</a>
+                <?php endif; ?>
+            <?php else: ?>
+                <span class="no-actions">No actions available</span>
+            <?php endif; ?>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
     </table>
 </body>
 </html>
