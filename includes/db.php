@@ -3,33 +3,30 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Get credentials from environment variables (Railway) or defaults
-$host = getenv('DB_HOST') ?: 'shuttle.proxy.rlwy.net';
-$port = getenv('DB_PORT') ?: 41167;
-$db   = getenv('DB_NAME') ?: 'student_system';
-$user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: 'oYCEtxbowPQVorrpZukBtfryYPgPWMqZ';
+// Railway MySQL credentials (get these from your MySQL service variables)
+$host = getenv('MYSQLHOST') ?: 'shuttle.proxy.rlwy.net'; // From MySQL service
+$port = getenv('MYSQLPORT') ?: 41167;                    // From MySQL service
+$db   = getenv('MYSQLDATABASE') ?: 'student_system';            // Default DB name
+$user = getenv('MYSQLUSER') ?: 'root';
+$pass = getenv('MYSQLPASSWORD') ?: 'oYCEtxbowPQVorrpZukBtfryYPgPWMqZ';
+
+// SSL configuration for Railway
+$options = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt',
+    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false
+];
 
 try {
-    // Test TCP connection first
-    $socket = @fsockopen($host, $port, $errno, $errstr, 5);
-    if (!$socket) die("❌ Network blocked: $errstr ($errno)");
-    
-    fclose($socket);
-    echo "✅ Port $port is reachable\n";
-    
-    // Test MySQL credentials
     $dsn = "mysql:host=$host;port=$port;dbname=$db";
-    $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt'
-    ];
-    
     $pdo = new PDO($dsn, $user, $pass, $options);
-    echo "✅ MySQL login successful!\n";
-    echo "Server version: " . $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
+    
+    echo "✅ Connected to Railway MySQL!";
+    echo "<br>MySQL Host: " . $host;
+    echo "<br>Port: " . $port;
     
 } catch (PDOException $e) {
-    die("❌ MySQL error: " . $e->getMessage());
+    die("❌ Connection failed: " . $e->getMessage());
 }
 ?>
