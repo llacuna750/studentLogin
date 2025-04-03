@@ -1,19 +1,17 @@
 <?php
-// Enable full error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Railway MySQL credentials (get these from your MySQL service variables)
-$host = getenv('MYSQLHOST') ?: 'shuttle.proxy.rlwy.net'; // From MySQL service
-$port = getenv('MYSQLPORT') ?: 41167;                    // From MySQL service
-$db   = getenv('MYSQLDATABASE') ?: 'student_system';            // Default DB name
-$user = getenv('MYSQLUSER') ?: 'root';
-$pass = getenv('MYSQLPASSWORD') ?: 'oYCEtxbowPQVorrpZukBtfryYPgPWMqZ';
+// Get Railway's auto-injected MySQL variables
+$host = getenv('MYSQLHOST');
+$port = getenv('MYSQLPORT');
+$db   = getenv('MYSQLDATABASE');
+$user = getenv('MYSQLUSER');
+$pass = getenv('MYSQLPASSWORD');
 
 // SSL configuration for Railway
 $options = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::MYSQL_ATTR_SSL_CA => '/etc/ssl/certs/ca-certificates.crt',
     PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false
 ];
@@ -23,8 +21,12 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
     echo "✅ Connected to Railway MySQL!";
-    echo "<br>MySQL Host: " . $host;
-    echo "<br>Port: " . $port;
+    echo "<br>Host: $host";
+    echo "<br>Database: $db";
+    
+    // Test query
+    $stmt = $pdo->query("SELECT 1");
+    echo "<br>Test query successful!";
     
 } catch (PDOException $e) {
     die("❌ Connection failed: " . $e->getMessage());
