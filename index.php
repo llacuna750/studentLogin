@@ -1,8 +1,6 @@
 <?php
 session_start();
-Route::get('/test-db', function() {
-    require __DIR__.'/db_connect.php';
-});
+require 'includes/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
