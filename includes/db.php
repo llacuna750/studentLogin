@@ -4,10 +4,10 @@ ini_set('display_errors', 1);
 
 // Get Railway's auto-injected MySQL variables
 $host = getenv('MYSQLHOST');
-$port = getenv('MYSQLPORT');
-$db   = getenv('MYSQLDATABASE');
-$user = getenv('MYSQLUSER');
-$pass = getenv('MYSQLPASSWORD');
+$port = getenv('DB_PORT');
+$db   = getenv('DB_NAME');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
 
 // SSL configuration for Railway
 $options = [
