@@ -1,9 +1,11 @@
 <?php
-$host = 'localhost';
+$host = 'shuttle.proxy.rlwy.net';
 $db   = 'student_system';
 $user = 'root';
-$pass = '';
+$pass = 'oYCEtxbowPQVorrpZukBtfryYPgPWMqZ';
 $charset = 'utf8mb4';
+$port = 41167;
+
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
